@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -19,6 +20,20 @@ namespace ArrayFiller
       var arr = new int[N];
       for (var i = 0; i < N; i++)
         arr[i] = Value;
+    }
+
+    [Benchmark]
+    public void SpanFill()
+    {
+      var arr = new int[N];
+      new Span<int>(arr).Fill(Value);
+    }
+
+    [Benchmark]
+    public void ArrayFill()
+    {
+      var arr = new int[N];
+      Array.Fill(arr, Value);
     }
 
     [Benchmark]
