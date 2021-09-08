@@ -8,13 +8,14 @@ Inspired by K.Kokosa tweet https://twitter.com/konradkokosa/status/1417760179072
 
 // * Summary *
 
+```
 BenchmarkDotNet=v0.13.0, OS=Windows 10.0.14393.3443 (1607/AnniversaryUpdate/Redstone1)
 Intel Xeon Gold 6136 CPU 3.00GHz, 2 CPU, 48 logical and 24 physical cores
 Frequency=2922816 Hz, Resolution=342.1358 ns, Timer=TSC
 .NET SDK=5.0.302
   [Host]     : .NET 5.0.8 (5.0.821.31504), X64 RyuJIT
   DefaultJob : .NET 5.0.8 (5.0.821.31504), X64 RyuJIT
-
+```
 
 |           Method |       N |             Mean |          Error |          StdDev |           Median |
 |----------------- |-------- |-----------------:|---------------:|----------------:|-----------------:|
