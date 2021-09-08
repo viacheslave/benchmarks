@@ -6,61 +6,57 @@ Using Integer type and [BenchmarkDotNet](https://benchmarkdotnet.org/articles/gu
 
 Inspired by K.Kokosa tweet https://twitter.com/konradkokosa/status/1417760179072946176?s=09
 
-Old laptop results:
-``` ini
+// * Summary *
 
-BenchmarkDotNet=v0.13.0, OS=Windows 10.0.19043.1110 (21H1/May2021Update)
-Intel Core i7-8550U CPU 1.80GHz (Kaby Lake R), 1 CPU, 8 logical and 4 physical cores
-.NET SDK=5.0.301
-  [Host]     : .NET 5.0.7 (5.0.721.25508), X64 RyuJIT
-  DefaultJob : .NET 5.0.7 (5.0.721.25508), X64 RyuJIT
-
-
-```
-|           Method |       N |             Mean |          Error |         StdDev |           Median |
-|----------------- |-------- |-----------------:|---------------:|---------------:|-----------------:|
-|          **ForLoop** |       **4** |         **7.454 ns** |      **0.1764 ns** |      **0.4917 ns** |         **7.427 ns** |
-|         SpanFill |       4 |         7.867 ns |      0.1903 ns |      0.2036 ns |         7.927 ns |
-|        ArrayFill |       4 |         6.582 ns |      0.1550 ns |      0.1846 ns |         6.652 ns |
-| EnumerableRepeat |       4 |        29.837 ns |      1.0084 ns |      2.9416 ns |        29.003 ns |
-|           Vector |       4 |         7.242 ns |      0.1508 ns |      0.2560 ns |         7.254 ns |
-|     VectorUnsafe |       4 |         7.349 ns |      0.1746 ns |      0.1868 ns |         7.403 ns |
-|          **ForLoop** |      **10** |        **15.864 ns** |      **0.3144 ns** |      **0.3861 ns** |        **15.848 ns** |
-|         SpanFill |      10 |        11.245 ns |      0.2515 ns |      0.2994 ns |        11.286 ns |
-|        ArrayFill |      10 |        10.189 ns |      0.2311 ns |      0.2838 ns |        10.179 ns |
-| EnumerableRepeat |      10 |        31.053 ns |      0.5926 ns |      0.5253 ns |        30.961 ns |
-|           Vector |      10 |         7.408 ns |      0.1802 ns |      0.1686 ns |         7.451 ns |
-|     VectorUnsafe |      10 |         8.111 ns |      0.0692 ns |      0.0614 ns |         8.113 ns |
-|          **ForLoop** |     **100** |       **149.477 ns** |      **2.9453 ns** |      **3.8297 ns** |       **150.073 ns** |
-|         SpanFill |     100 |        52.013 ns |      0.9914 ns |      0.9274 ns |        51.647 ns |
-|        ArrayFill |     100 |        77.039 ns |      1.2551 ns |      1.1741 ns |        76.935 ns |
-| EnumerableRepeat |     100 |       101.613 ns |      1.9881 ns |      1.8596 ns |       101.331 ns |
-|           Vector |     100 |        28.149 ns |      0.5799 ns |      0.5696 ns |        28.235 ns |
-|     VectorUnsafe |     100 |        34.113 ns |      0.7175 ns |      2.0585 ns |        33.542 ns |
-|          **ForLoop** |    **1000** |     **1,479.875 ns** |     **28.2597 ns** |     **30.2376 ns** |     **1,485.999 ns** |
-|         SpanFill |    1000 |       524.938 ns |     10.3749 ns |     13.4903 ns |       526.881 ns |
-|        ArrayFill |    1000 |       650.743 ns |     12.6834 ns |     14.6062 ns |       649.274 ns |
-| EnumerableRepeat |    1000 |       720.821 ns |     14.0954 ns |     17.8261 ns |       716.369 ns |
-|           Vector |    1000 |       259.270 ns |      4.8561 ns |      6.3143 ns |       259.358 ns |
-|     VectorUnsafe |    1000 |       311.501 ns |      6.0991 ns |      6.2634 ns |       311.947 ns |
-|          **ForLoop** |   **10000** |    **14,628.800 ns** |    **261.6607 ns** |    **244.7575 ns** |    **14,647.926 ns** |
-|         SpanFill |   10000 |     5,011.987 ns |     78.8189 ns |     65.8174 ns |     5,026.836 ns |
-|        ArrayFill |   10000 |     6,064.872 ns |    120.6732 ns |    134.1279 ns |     6,077.274 ns |
-| EnumerableRepeat |   10000 |     6,286.792 ns |    122.7673 ns |    126.0730 ns |     6,275.406 ns |
-|           Vector |   10000 |     2,615.605 ns |     49.6652 ns |     48.7779 ns |     2,629.477 ns |
-|     VectorUnsafe |   10000 |     2,820.813 ns |     55.8525 ns |     62.0799 ns |     2,821.610 ns |
-|          **ForLoop** |  **100000** |   **330,773.592 ns** |  **6,450.9698 ns** |  **6,902.4654 ns** |   **333,918.115 ns** |
-|         SpanFill |  100000 |   228,113.641 ns |  4,548.7372 ns |  5,586.2577 ns |   229,176.233 ns |
-|        ArrayFill |  100000 |   242,668.495 ns |  4,741.2156 ns |  6,646.5222 ns |   244,897.949 ns |
-| EnumerableRepeat |  100000 |   240,222.748 ns |  4,781.7521 ns |  5,872.4210 ns |   241,256.262 ns |
-|           Vector |  100000 |   221,498.505 ns |  4,132.9553 ns |  4,059.1147 ns |   221,244.873 ns |
-|     VectorUnsafe |  100000 |   219,131.230 ns |  4,306.6626 ns |  4,229.7185 ns |   219,787.048 ns |
-|          **ForLoop** | **1000000** | **3,203,815.842 ns** | **61,157.7035 ns** | **65,438.0576 ns** | **3,203,581.641 ns** |
-|         SpanFill | 1000000 | 2,275,043.413 ns | 43,563.9317 ns | 53,500.4204 ns | 2,301,090.039 ns |
-|        ArrayFill | 1000000 | 2,356,118.848 ns | 45,537.6372 ns | 52,441.2107 ns | 2,364,718.164 ns |
-| EnumerableRepeat | 1000000 | 2,368,221.500 ns | 46,724.9141 ns | 62,376.4182 ns | 2,373,231.641 ns |
-|           Vector | 1000000 | 2,184,348.326 ns | 15,647.6820 ns | 13,871.2625 ns | 2,189,460.156 ns |
-|     VectorUnsafe | 1000000 | 2,159,664.868 ns | 41,966.4736 ns | 41,216.6885 ns | 2,184,183.789 ns |
+BenchmarkDotNet=v0.13.0, OS=Windows 10.0.14393.3443 (1607/AnniversaryUpdate/Redstone1)
+Intel Xeon Gold 6136 CPU 3.00GHz, 2 CPU, 48 logical and 24 physical cores
+Frequency=2922816 Hz, Resolution=342.1358 ns, Timer=TSC
+.NET SDK=5.0.302
+  [Host]     : .NET 5.0.8 (5.0.821.31504), X64 RyuJIT
+  DefaultJob : .NET 5.0.8 (5.0.821.31504), X64 RyuJIT
 
 
-
+|           Method |       N |             Mean |          Error |          StdDev |           Median |
+|----------------- |-------- |-----------------:|---------------:|----------------:|-----------------:|
+|          ForLoop |       4 |         7.284 ns |      0.1928 ns |       0.5310 ns |         7.114 ns |
+|         SpanFill |       4 |        10.083 ns |      0.2347 ns |       0.5153 ns |        10.020 ns |
+|        ArrayFill |       4 |         8.747 ns |      0.1989 ns |       0.4952 ns |         8.620 ns |
+| EnumerableRepeat |       4 |        29.256 ns |      0.6165 ns |       1.5467 ns |        28.736 ns |
+|           Vector |       4 |         7.459 ns |      0.1775 ns |       0.4706 ns |         7.332 ns |
+|     VectorUnsafe |       4 |         8.945 ns |      0.2043 ns |       0.4309 ns |         8.884 ns |
+|          ForLoop |      10 |        14.429 ns |      0.3186 ns |       0.7509 ns |        14.393 ns |
+|         SpanFill |      10 |        10.777 ns |      0.2456 ns |       0.2828 ns |        10.869 ns |
+|        ArrayFill |      10 |        10.433 ns |      0.2280 ns |       0.1904 ns |        10.389 ns |
+| EnumerableRepeat |      10 |        33.976 ns |      0.7032 ns |       1.8401 ns |        33.605 ns |
+|           Vector |      10 |         8.118 ns |      0.1921 ns |       0.3102 ns |         8.000 ns |
+|     VectorUnsafe |      10 |         7.789 ns |      0.1783 ns |       0.1982 ns |         7.710 ns |
+|          ForLoop |     100 |       108.496 ns |      2.1946 ns |       2.8536 ns |       107.754 ns |
+|         SpanFill |     100 |        72.053 ns |      1.4693 ns |       2.4549 ns |        72.183 ns |
+|        ArrayFill |     100 |        95.167 ns |      1.9111 ns |       4.0727 ns |        94.535 ns |
+| EnumerableRepeat |     100 |       122.987 ns |      2.7766 ns |       8.1433 ns |       121.733 ns |
+|           Vector |     100 |        36.494 ns |      0.7481 ns |       1.2080 ns |        36.547 ns |
+|     VectorUnsafe |     100 |        34.914 ns |      0.7293 ns |       1.6312 ns |        34.517 ns |
+|          ForLoop |    1000 |     1,005.640 ns |     20.1234 ns |      55.4258 ns |     1,001.698 ns |
+|         SpanFill |    1000 |       595.364 ns |     11.9092 ns |      30.3128 ns |       587.630 ns |
+|        ArrayFill |    1000 |       832.154 ns |     14.7162 ns |      26.9094 ns |       821.171 ns |
+| EnumerableRepeat |    1000 |       871.682 ns |     17.4339 ns |      32.7451 ns |       865.868 ns |
+|           Vector |    1000 |       339.206 ns |      6.5463 ns |      12.9217 ns |       338.248 ns |
+|     VectorUnsafe |    1000 |       411.596 ns |      8.1581 ns |      18.5801 ns |       410.408 ns |
+|          ForLoop |   10000 |     7,765.828 ns |    146.9752 ns |     130.2897 ns |     7,761.431 ns |
+|         SpanFill |   10000 |     5,115.015 ns |     30.5612 ns |      27.0917 ns |     5,114.086 ns |
+|        ArrayFill |   10000 |     7,733.817 ns |    150.1370 ns |     166.8769 ns |     7,721.386 ns |
+| EnumerableRepeat |   10000 |     6,621.446 ns |    125.1296 ns |     110.9241 ns |     6,593.316 ns |
+|           Vector |   10000 |     4,963.895 ns |     96.6805 ns |      94.9531 ns |     4,927.697 ns |
+|     VectorUnsafe |   10000 |     4,448.028 ns |     85.2660 ns |      87.5619 ns |     4,475.555 ns |
+|          ForLoop |  100000 |   251,181.508 ns |  2,271.9054 ns |   2,013.9849 ns |   250,332.648 ns |
+|         SpanFill |  100000 |   234,109.369 ns |  1,076.8504 ns |   1,007.2865 ns |   233,961.584 ns |
+|        ArrayFill |  100000 |   249,116.892 ns |  1,353.7727 ns |   1,200.0843 ns |   248,853.095 ns |
+| EnumerableRepeat |  100000 |   242,105.290 ns |  2,108.2951 ns |   1,972.1005 ns |   241,777.499 ns |
+|           Vector |  100000 |   235,122.216 ns |  3,520.2854 ns |   2,939.5978 ns |   235,128.404 ns |
+|     VectorUnsafe |  100000 |   229,300.986 ns |  3,488.6718 ns |   3,092.6167 ns |   228,268.648 ns |
+|          ForLoop | 1000000 | 2,684,192.521 ns | 52,793.4705 ns | 102,969.6097 ns | 2,711,756.349 ns |
+|         SpanFill | 1000000 | 2,367,821.150 ns | 45,919.5188 ns |  54,663.9206 ns | 2,358,319.372 ns |
+|        ArrayFill | 1000000 | 2,398,216.773 ns | 42,148.2131 ns |  39,425.4647 ns | 2,387,930.157 ns |
+| EnumerableRepeat | 1000000 | 2,347,596.973 ns | 46,154.1438 ns |  71,856.4414 ns | 2,318,538.734 ns |
+|           Vector | 1000000 | 2,256,204.245 ns | 34,031.9414 ns |  30,168.4296 ns | 2,252,355.503 ns |
+|     VectorUnsafe | 1000000 | 2,320,131.069 ns | 43,977.5746 ns |  50,644.6403 ns | 2,312,886.143 ns |
